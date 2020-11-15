@@ -28,7 +28,7 @@ def turtle_setup():
     turtle.up()
     draw_annonce_box()
     turtle.goto(0, 165)
-    turtle.write("Welcome to the Game!", align="center", font=("Calibri", 12, "bold"))
+    turtle.write("Bienvenue dans le labyrinthe!", align="center", font=("Calibri", 12, "bold"))
     # draw inventory
     draw_inventory_box()
     turtle.up()
@@ -157,7 +157,7 @@ def start_game():
     turtle.dot(tile_size * RATIO_PERSONNAGE, COULEUR_PERSONNAGE)
     turtle.listen()  # Déclenche l’écoute du clavier
     position = POSITION_DEPART
-    turtle.onkeypress(deplacer_gauche, "Left")  # Associe à la touche Left une fonction appelée deplacer_gauche
+    turtle.onkeypress(deplacer_gauche, "Left")  
     turtle.onkeypress(deplacer_droite, "Right")
     turtle.onkeypress(deplacer_haut, "Up")
     turtle.onkeypress(deplacer_bas, "Down")
@@ -198,16 +198,28 @@ def move(directed_tile, diff_x, diff_y):
     position = directed_tile
 
     if check_is_object(directed_tile):
+        stop_movement()
         inventory.append(add_item_to_inventory(directed_tile))
         update_inventory_box(turtle.pos())
+    
+    start_movement()
 
-
-def win():
-    update_annonce_box("Bravo! Vous vous \xeates \xe9chapp\xe9.", turtle.pos())
+def stop_movement():
     turtle.onkeypress(None, "Left")
     turtle.onkeypress(None, "Right")
     turtle.onkeypress(None, "Up")
     turtle.onkeypress(None, "Down")
+
+def start_movement():
+    turtle.onkeypress(deplacer_gauche, "Left")  
+    turtle.onkeypress(deplacer_droite, "Right")
+    turtle.onkeypress(deplacer_haut, "Up")
+    turtle.onkeypress(deplacer_bas, "Down")
+    
+
+def win():
+    stop_movement()
+    update_annonce_box("Bravo! Vous vous \xeates \xe9chapp\xe9.", turtle.pos())
 
 
 def deplacer_gauche():
@@ -226,6 +238,7 @@ def deplacer_gauche():
                 # if correct
                 move(directed_tile, -tile_size, 0)
         else:
+            turtle.onkeypress(None, "Left")
             move(directed_tile, -tile_size, 0)
     turtle.onkeypress(deplacer_gauche, "Left")
 
@@ -245,6 +258,7 @@ def deplacer_droite():
                 # if correct
                 move(directed_tile, tile_size, 0)
         else:
+            turtle.onkeypress(None, "Right")
             move(directed_tile, tile_size, 0)
     turtle.onkeypress(deplacer_droite, "Right")
 
@@ -265,6 +279,7 @@ def deplacer_haut():
                 # if correct
                 move(directed_tile, 0, tile_size)
         else:
+            turtle.onkeypress(None, "Up")
             move(directed_tile, 0, tile_size)
     turtle.onkeypress(deplacer_haut, "Up")
 
@@ -285,6 +300,7 @@ def deplacer_bas():
                 # if correct
                 move(directed_tile, 0, -tile_size)
         else:
+            turtle.onkeypress(None, "Down")
             move(directed_tile, 0, -tile_size)
     turtle.onkeypress(deplacer_bas, "Down")
 
